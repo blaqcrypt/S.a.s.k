@@ -386,6 +386,47 @@
     el.classList.add('active');
   });
 </script>
+                    <script>
+  // FORCE reveal visibility (backup)
+  document.querySelectorAll('.reveal').forEach(el => {
+    el.classList.add('active');
+  });
+
+  // COUNT UP ANIMATION
+  document.querySelectorAll('.count-up').forEach(counter => {
+    const target = +counter.getAttribute('data-target');
+    let current = 0;
+    const increment = target / 60;
+
+    const updateCount = () => {
+      current += increment;
+      if (current < target) {
+        counter.innerText = Math.floor(current);
+        requestAnimationFrame(updateCount);
+      } else {
+        counter.innerText = target.toLocaleString();
+      }
+    };
+    updateCount();
+  });
+
+  // DARK / LIGHT MODE TOGGLE
+  const toggleBtn = document.getElementById('theme-toggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+  }
+
+  // MOBILE MENU TOGGLE
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+                    </script>
 
 </body>
                 </html>
