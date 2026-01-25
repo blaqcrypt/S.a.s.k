@@ -380,45 +380,9 @@
                 <!-- Card 4 -->
                 <div class="card-interactive bg-sask-card/60 backdrop-blur border border-white/5 p-6 rounded-xl reveal">
 
-                </section>
+              
 <script>
-  document.querySelectorAll('.reveal').forEach(el => {
-    el.classList.add('active');
-  });
-</script>
-                    <script>
-  // FORCE reveal visibility (backup)
-  document.querySelectorAll('.reveal').forEach(el => {
-    el.classList.add('active');
-  });
-
-  // COUNT UP ANIMATION
-  document.querySelectorAll('.count-up').forEach(counter => {
-    const target = +counter.getAttribute('data-target');
-    let current = 0;
-    const increment = target / 60;
-
-    const updateCount = () => {
-      current += increment;
-      if (current < target) {
-        counter.innerText = Math.floor(current);
-        requestAnimationFrame(updateCount);
-      } else {
-        counter.innerText = target.toLocaleString();
-      }
-    };
-    updateCount();
-  });
-
-  // DARK / LIGHT MODE TOGGLE
-  const toggleBtn = document.getElementById('theme-toggle');
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-    });
-  }
-
-  // MOBILE MENU TOGGLE
+  // MOBILE MENU
   const menuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   if (menuBtn && mobileMenu) {
@@ -426,8 +390,62 @@
       mobileMenu.classList.toggle('hidden');
     });
   }
-                    </script>
 
+  // DARK / LIGHT TOGGLE (VISIBLE)
+  const toggleBtn = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('bg-white');
+      document.body.classList.toggle('text-black');
+      document.body.classList.toggle('bg-sask-dark');
+      document.body.classList.toggle('text-white');
+
+      if (themeIcon.classList.contains('fa-moon')) {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+      } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+      }
+    });
+  }
+
+  // SCROLL REVEAL (REAL ANIMATION)
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // COUNT UP
+  document.querySelectorAll('.count-up').forEach(counter => {
+    const target = +counter.dataset.target;
+    let current = 0;
+    const step = target / 80;
+
+    const update = () => {
+      current += step;
+      if (current < target) {
+        counter.textContent = Math.floor(current);
+        requestAnimationFrame(update);
+      } else {
+        counter.textContent = target.toLocaleString();
+      }
+    };
+    update();
+  });
+</script>
 </body>
                 </html>
           
